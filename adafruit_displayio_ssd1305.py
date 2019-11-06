@@ -40,7 +40,7 @@ Implementation Notes
 **Software and Dependencies:**
 
 * Adafruit CircuitPython (version 5+) firmware for the supported boards:
-https://github.com/adafruit/circuitpython/releases
+  https://github.com/adafruit/circuitpython/releases
 
 """
 
