@@ -34,7 +34,7 @@ Implementation Notes
 **Hardware:**
 
 * `Monochrome 1.54" 128x64 OLED Graphic Display Module Kit <https://www.adafruit.com/product/2720>`_
-* `Monochrome 2.42" 128x64 OLED Graphic Display Module Kit  <https://www.adafruit.com/product/2719>`_
+* `Monochrome 2.42" 128x64 OLED Graphic Display Module Kit <https://www.adafruit.com/product/2719>`_
 * `Monochrome 2.3" 128x32 OLED Graphic Display Module Kit <https://www.adafruit.com/product/2675>`_
 
 **Software and Dependencies:**
