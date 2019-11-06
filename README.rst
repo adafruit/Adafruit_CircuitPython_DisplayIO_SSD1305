@@ -61,6 +61,7 @@ Usage Example
 .. code-block:: python
 
     import board
+    import digitalio
     import displayio
     import terminalio
     from adafruit_display_text import label
@@ -68,21 +69,26 @@ Usage Example
 
     displayio.release_displays()
 
-    oled_reset = board.D9
-
-    # Use for I2C
-    #i2c = board.I2C()
-    #display_bus = displayio.I2CDisplay(i2c, device_address=0x3c, reset=oled_reset)
+    # Manually Toggle Reset
+    reset = digitalio.DigitalInOut(board.D9)
+    reset.switch_to_output(value=False)
+    reset.value = True
 
     # Use for SPI
     spi = board.SPI()
     oled_cs = board.D5
     oled_dc = board.D6
     display_bus = displayio.FourWire(spi, command=oled_dc, chip_select=oled_cs,
-                                     reset=oled_reset, baudrate=1000000)
+                                     baudrate=1000000)
+
+    # Use for I2C
+    # i2c = board.I2C()
+    # display_bus = displayio.I2CDisplay(i2c, device_address=0x3c)
+
     WIDTH = 128
-    HEIGHT = 64     # Change to 64 if needed
-    BORDER = 5
+    HEIGHT = 64     # Change to 32 if needed
+    BORDER = 8
+    FONTSCALE = 1
 
     display = adafruit_displayio_ssd1305.SSD1305(display_bus, width=WIDTH, height=HEIGHT)
 
@@ -90,7 +96,7 @@ Usage Example
     splash = displayio.Group(max_size=10)
     display.show(splash)
 
-    color_bitmap = displayio.Bitmap(WIDTH, HEIGHT, 1)
+    color_bitmap = displayio.Bitmap(display.width, display.height, 1)
     color_palette = displayio.Palette(1)
     color_palette[0] = 0xFFFFFF # White
 
@@ -100,7 +106,7 @@ Usage Example
     splash.append(bg_sprite)
 
     # Draw a smaller inner rectangle
-    inner_bitmap = displayio.Bitmap(WIDTH-BORDER*2, HEIGHT-BORDER*2, 1)
+    inner_bitmap = displayio.Bitmap(display.width - BORDER * 2, display.height - BORDER * 2, 1)
     inner_palette = displayio.Palette(1)
     inner_palette[0] = 0x000000 # Black
     inner_sprite = displayio.TileGrid(inner_bitmap,
@@ -110,8 +116,12 @@ Usage Example
 
     # Draw a label
     text = "Hello World!"
-    text_area = label.Label(terminalio.FONT, text=text, color=0xFFFFFF, x=28, y=HEIGHT//2-1)
-    splash.append(text_area)
+    text_area = label.Label(terminalio.FONT, text=text, color=0xFFFFFF)
+    text_width = text_area.bounding_box[2] * FONTSCALE
+    text_group = displayio.Group(max_size=10, scale=FONTSCALE, x=display.width // 2 - text_width // 2,
+                                 y=display.height // 2)
+    text_group.append(text_area) # Subgroup for text scaling
+    splash.append(text_group)
 
     while True:
         pass
