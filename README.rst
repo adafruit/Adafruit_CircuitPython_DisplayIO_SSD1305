@@ -61,7 +61,6 @@ Usage Example
 .. code-block:: python
 
     import board
-    import digitalio
     import displayio
     import terminalio
     from adafruit_display_text import label
@@ -69,17 +68,12 @@ Usage Example
 
     displayio.release_displays()
 
-    # Manually Toggle Reset
-    reset = digitalio.DigitalInOut(board.D9)
-    reset.switch_to_output(value=False)
-    reset.value = True
-
     # Use for SPI
     spi = board.SPI()
     oled_cs = board.D5
     oled_dc = board.D6
     display_bus = displayio.FourWire(spi, command=oled_dc, chip_select=oled_cs,
-                                     baudrate=1000000)
+                                     baudrate=1000000, reset=board.D9)
 
     # Use for I2C
     # i2c = board.I2C()
