@@ -52,21 +52,21 @@ __version__ = "0.0.0-auto.0"
 __repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_DisplayIO_SSD1305.git"
 
 _INIT_SEQUENCE = (
-    b"\xAE\x00"      # DISPLAY_OFF
+    b"\xAE\x00"  # DISPLAY_OFF
     b"\xd5\x01\x80"  # SET_DISP_CLK_DIV
-    b"\xA1\x00"      # Column 127 is segment 0
+    b"\xA1\x00"  # Column 127 is segment 0
     b"\xA8\x01\x3F"  # Mux ratio is 1/64
     b"\xad\x01\x8e"  # Set Master Configuration
     b"\xd8\x01\x05"  # Set Area Color Mode On/Off & Low Power Display Mode
     b"\x20\x01\x00"  # Set memory addressing to horizontal mode.
     b"\x40\x01\x2E"  # SET_DISP_START_LINE ADD
-    b"\xc8\x00"      # Set COM Output Scan Direction 64 to 1
+    b"\xc8\x00"  # Set COM Output Scan Direction 64 to 1
     b"\xda\x01\x12"  # Set com configuration
-    b"\x91\x04\x3f\x3f\x3f\x3f" # Current drive pulse width of BANK0, Color A, Band C.
+    b"\x91\x04\x3f\x3f\x3f\x3f"  # Current drive pulse width of BANK0, Color A, Band C.
     b"\xd9\x01\xd2"  # Set pre-charge period orig: 0xd9, 0x22 if self.external_vcc else 0xf1,
     b"\xdb\x01\x34"  # Set vcom configuration 0xdb, 0x30, $ 0.83* Vcc
-    b"\xA6\x00"      # Normal display
-    b"\xA4\x00"      # output follows RAM contents  SET_ENTIRE_ON
+    b"\xA6\x00"  # Normal display
+    b"\xA4\x00"  # output follows RAM contents  SET_ENTIRE_ON
     b"\x8d\x01\x14"  # Enable charge pump
     b"\xAF\x00\x00"  # DISPLAY_ON
 )
@@ -74,6 +74,7 @@ _INIT_SEQUENCE = (
 # pylint: disable=too-few-public-methods
 class SSD1305(displayio.Display):
     """SSD1305 driver"""
+
     def __init__(self, bus, **kwargs):
         colstart = 0
         # Patch the init sequence for 32 pixel high displays.
@@ -82,12 +83,22 @@ class SSD1305(displayio.Display):
         height = kwargs["height"]
         if "rotation" in kwargs and kwargs["rotation"] % 180 != 0:
             height = kwargs["width"]
-        init_sequence[9] = height - 1 # patch mux ratio
+        init_sequence[9] = height - 1  # patch mux ratio
 
         if kwargs["height"] == 32:
             colstart = 4
-        super().__init__(bus, init_sequence, **kwargs, color_depth=1, grayscale=True,
-                         pixels_in_byte_share_row=False,
-                         set_column_command=0x21, set_row_command=0x22, data_as_commands=True,
-                         set_vertical_scroll=0xd3, brightness_command=0x81,
-                         single_byte_bounds=True, colstart=colstart)
+        super().__init__(
+            bus,
+            init_sequence,
+            **kwargs,
+            color_depth=1,
+            grayscale=True,
+            pixels_in_byte_share_row=False,
+            set_column_command=0x21,
+            set_row_command=0x22,
+            data_as_commands=True,
+            set_vertical_scroll=0xD3,
+            brightness_command=0x81,
+            single_byte_bounds=True,
+            colstart=colstart,
+        )
