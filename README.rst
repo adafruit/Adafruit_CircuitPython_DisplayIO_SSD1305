@@ -87,7 +87,7 @@ Usage Example
     display = adafruit_displayio_ssd1305.SSD1305(display_bus, width=WIDTH, height=HEIGHT)
 
     # Make the display context
-    splash = displayio.Group(max_size=10)
+    splash = displayio.Group()
     display.show(splash)
 
     color_bitmap = displayio.Bitmap(display.width, display.height, 1)
@@ -112,7 +112,7 @@ Usage Example
     text = "Hello World!"
     text_area = label.Label(terminalio.FONT, text=text, color=0xFFFFFF)
     text_width = text_area.bounding_box[2] * FONTSCALE
-    text_group = displayio.Group(max_size=10, scale=FONTSCALE, x=display.width // 2 - text_width // 2,
+    text_group = displayio.Group(scale=FONTSCALE, x=display.width // 2 - text_width // 2,
                                  y=display.height // 2)
     text_group.append(text_area) # Subgroup for text scaling
     splash.append(text_group)
