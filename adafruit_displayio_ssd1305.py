@@ -56,7 +56,14 @@ _INIT_SEQUENCE = (
 
 # pylint: disable=too-few-public-methods
 class SSD1305(displayio.Display):
-    """SSD1305 driver"""
+    """
+    SSD1305 driver
+
+    :param int width: The width of the display
+    :param int height: The height of the display
+    :param int rotation: The rotation of the display in degrees. Default is 0.
+        One of (0, 90, 180, 270)
+    """
 
     def __init__(self, bus, **kwargs):
         colstart = 0
@@ -80,7 +87,6 @@ class SSD1305(displayio.Display):
             set_column_command=0x21,
             set_row_command=0x22,
             data_as_commands=True,
-            set_vertical_scroll=0xD3,
             brightness_command=0x81,
             single_byte_bounds=True,
             colstart=colstart,
