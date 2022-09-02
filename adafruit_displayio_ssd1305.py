@@ -33,6 +33,7 @@ import displayio
 
 try:
     from typing import Union
+    from busio import I2C
 except ImportError:
     pass
 
@@ -71,7 +72,7 @@ class SSD1305(displayio.Display):
     """
 
     def __init__(
-        self, bus: Union[displayio.Fourwire, displayio.I2CDisplay], **kwargs
+        self, bus: Union[displayio.Fourwire, I2C], **kwargs
     ) -> None:
         colstart = 0
         # Patch the init sequence for 32 pixel high displays.
