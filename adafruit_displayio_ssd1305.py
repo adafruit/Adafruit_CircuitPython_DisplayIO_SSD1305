@@ -71,9 +71,7 @@ class SSD1305(displayio.Display):
         One of (0, 90, 180, 270)
     """
 
-    def __init__(
-        self, bus: Union[displayio.Fourwire, I2C], **kwargs
-    ) -> None:
+    def __init__(self, bus: Union[displayio.Fourwire, I2C], **kwargs) -> None:
         colstart = 0
         # Patch the init sequence for 32 pixel high displays.
         init_sequence = bytearray(_INIT_SEQUENCE)
