@@ -31,6 +31,11 @@ Implementation Notes
 
 import displayio
 
+try:
+    from typing import Union
+except ImportError:
+    pass
+
 __version__ = "0.0.0+auto.0"
 __repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_DisplayIO_SSD1305.git"
 
@@ -65,7 +70,9 @@ class SSD1305(displayio.Display):
         One of (0, 90, 180, 270)
     """
 
-    def __init__(self, bus, **kwargs):
+    def __init__(
+        self, bus: Union[displayio.Fourwire, displayio.I2CDisplay], **kwargs
+    ) -> None:
         colstart = 0
         # Patch the init sequence for 32 pixel high displays.
         init_sequence = bytearray(_INIT_SEQUENCE)
