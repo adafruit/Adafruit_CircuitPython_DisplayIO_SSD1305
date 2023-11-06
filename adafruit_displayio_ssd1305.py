@@ -32,13 +32,11 @@ Implementation Notes
 # Starting in CircuitPython 9.x fourwire will be a seperate internal library
 # rather than a component of the displayio library
 try:
-    # pylint: disable=useless-import-alias
-    from fourwire import FourWire as FourWire
-    from busdisplay import BusDisplay as BusDisplay
-    from i2cdisplaybus import I2CDisplayBus as I2CDisplayBus
+    from fourwire import FourWire
+    from busdisplay import BusDisplay
+    from i2cdisplaybus import I2CDisplayBus
 except ImportError:
-    # pylint: disable=useless-import-alias
-    from displayio import FourWire as FourWire
+    from displayio import FourWire
     from displayio import Display as BusDisplay
     from displayio import I2CDisplay as I2CDisplayBus
 
