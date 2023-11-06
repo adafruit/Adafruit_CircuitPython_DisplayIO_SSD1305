@@ -8,6 +8,13 @@ background, a smaller black rectangle, and some white text.
 
 import board
 import displayio
+
+# Starting in CircuitPython 9.x fourwire will be a seperate internal library
+# rather than a component of the displayio library
+try:
+    import fourwire
+except ImportError:
+    pass
 import terminalio
 from adafruit_display_text import label
 import adafruit_displayio_ssd1305
@@ -21,9 +28,16 @@ oled_reset = board.D9
 spi = board.SPI()
 oled_cs = board.D5
 oled_dc = board.D6
-display_bus = displayio.FourWire(
-    spi, command=oled_dc, chip_select=oled_cs, baudrate=1000000, reset=oled_reset
-)
+# Check if the version of CircuitPython being used still utilizes FourWise as a
+# component of the displayio library
+if "FourWire" in dir(displayio):
+    display_bus = displayio.FourWire(
+        spi, command=oled_dc, chip_select=oled_cs, baudrate=1000000, reset=oled_reset
+    )
+else:
+    display_bus = fourwire.FourWire(
+        spi, command=oled_dc, chip_select=oled_cs, baudrate=1000000, reset=oled_reset
+    )
 
 # Use for I2C
 # i2c = board.I2C()  # uses board.SCL and board.SDA
@@ -39,7 +53,7 @@ display = adafruit_displayio_ssd1305.SSD1305(display_bus, width=WIDTH, height=HE
 
 # Make the display context
 splash = displayio.Group()
-display.show(splash)
+display.root_group = splash
 
 color_bitmap = displayio.Bitmap(display.width, display.height, 1)
 color_palette = displayio.Palette(1)
