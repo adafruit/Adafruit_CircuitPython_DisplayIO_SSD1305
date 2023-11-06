@@ -29,7 +29,16 @@ Implementation Notes
 
 # imports
 
-import displayio
+# Starting in CircuitPython 9.x fourwire will be a seperate internal library
+# rather than a component of the displayio library
+try:
+    from fourwire import FourWire
+    from busdisplay import BusDisplay
+    from i2cdisplaybus import I2CDisplayBus
+except ImportError:
+    from displayio import FourWire
+    from displayio import Display as BusDisplay
+    from displayio import I2CDisplay as I2CDisplayBus
 
 try:
     from typing import Union
@@ -61,7 +70,7 @@ _INIT_SEQUENCE = (
 
 
 # pylint: disable=too-few-public-methods
-class SSD1305(displayio.Display):
+class SSD1305(BusDisplay):
     """
     SSD1305 driver
 
@@ -71,9 +80,7 @@ class SSD1305(displayio.Display):
         One of (0, 90, 180, 270)
     """
 
-    def __init__(
-        self, bus: Union[displayio.Fourwire, displayio.I2CDisplay], **kwargs
-    ) -> None:
+    def __init__(self, bus: Union[FourWire, I2CDisplayBus], **kwargs) -> None:
         colstart = 0
         # Patch the init sequence for 32 pixel high displays.
         init_sequence = bytearray(_INIT_SEQUENCE)

@@ -64,6 +64,15 @@ Usage Example
 
     import board
     import displayio
+    # Starting in CircuitPython 9.x fourwire will be a seperate internal library
+    # rather than a component of the displayio library
+    try:
+        from fourwire import FourWire
+    # Use for I2C
+    #    from i2cdisplaybus import I2CDisplayBus
+    except ImportError:
+        from displayio import FourWire
+        # from displayio import I2CDisplay as I2CDisplayBus
     import terminalio
     from adafruit_display_text import label
     import adafruit_displayio_ssd1305
@@ -74,12 +83,14 @@ Usage Example
     spi = board.SPI()
     oled_cs = board.D5
     oled_dc = board.D6
-    display_bus = displayio.FourWire(spi, command=oled_dc, chip_select=oled_cs,
-                                     baudrate=1000000, reset=board.D9)
+    display_bus = FourWire(
+        spi, command=oled_dc, chip_select=oled_cs, baudrate=1000000, reset=board.D9
+    )
 
     # Use for I2C
     # i2c = board.I2C()
-    # display_bus = displayio.I2CDisplay(i2c, device_address=0x3c)
+    #
+    # display_bus = I2CDisplayBus(i1c, device_address=0x3c)
 
     WIDTH = 128
     HEIGHT = 64     # Change to 32 if needed
@@ -90,7 +101,7 @@ Usage Example
 
     # Make the display context
     splash = displayio.Group()
-    display.show(splash)
+    display.root_group = splash
 
     color_bitmap = displayio.Bitmap(display.width, display.height, 1)
     color_palette = displayio.Palette(1)
