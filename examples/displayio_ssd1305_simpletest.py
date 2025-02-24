@@ -9,19 +9,12 @@ background, a smaller black rectangle, and some white text.
 import board
 import displayio
 
-# Starting in CircuitPython 9.x fourwire will be a seperate internal library
-# rather than a component of the displayio library
-try:
-    from fourwire import FourWire
-
-    # Use for I2C
-    # from i2cdisplaybus import I2CDisplayBus
-except ImportError:
-    from displayio import FourWire
-
-    # from displayio import I2CDisplay as I2CDisplayBus
+# Use for I2C
+# from i2cdisplaybus import I2CDisplayBus
 import terminalio
 from adafruit_display_text import label
+from fourwire import FourWire
+
 import adafruit_displayio_ssd1305
 
 displayio.release_displays()
@@ -61,14 +54,10 @@ bg_sprite = displayio.TileGrid(color_bitmap, pixel_shader=color_palette, x=0, y=
 splash.append(bg_sprite)
 
 # Draw a smaller inner rectangle
-inner_bitmap = displayio.Bitmap(
-    display.width - BORDER * 2, display.height - BORDER * 2, 1
-)
+inner_bitmap = displayio.Bitmap(display.width - BORDER * 2, display.height - BORDER * 2, 1)
 inner_palette = displayio.Palette(1)
 inner_palette[0] = 0x000000  # Black
-inner_sprite = displayio.TileGrid(
-    inner_bitmap, pixel_shader=inner_palette, x=BORDER, y=BORDER
-)
+inner_sprite = displayio.TileGrid(inner_bitmap, pixel_shader=inner_palette, x=BORDER, y=BORDER)
 splash.append(inner_sprite)
 
 # Draw a label
