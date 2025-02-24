@@ -28,20 +28,13 @@ Implementation Notes
 """
 
 # imports
-
-# Starting in CircuitPython 9.x fourwire will be a seperate internal library
-# rather than a component of the displayio library
-try:
-    from fourwire import FourWire
-    from busdisplay import BusDisplay
-    from i2cdisplaybus import I2CDisplayBus
-except ImportError:
-    from displayio import FourWire
-    from displayio import Display as BusDisplay
-    from displayio import I2CDisplay as I2CDisplayBus
+from busdisplay import BusDisplay
 
 try:
     from typing import Union
+
+    from fourwire import FourWire
+    from i2cdisplaybus import I2CDisplayBus
 except ImportError:
     pass
 
@@ -49,23 +42,23 @@ __version__ = "0.0.0+auto.0"
 __repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_DisplayIO_SSD1305.git"
 
 _INIT_SEQUENCE = (
-    b"\xAE\x00"  # DISPLAY_OFF
+    b"\xae\x00"  # DISPLAY_OFF
     b"\xd5\x01\x80"  # SET_DISP_CLK_DIV
-    b"\xA1\x00"  # Column 127 is segment 0
-    b"\xA8\x01\x3F"  # Mux ratio is 1/64
+    b"\xa1\x00"  # Column 127 is segment 0
+    b"\xa8\x01\x3f"  # Mux ratio is 1/64
     b"\xad\x01\x8e"  # Set Master Configuration
     b"\xd8\x01\x05"  # Set Area Color Mode On/Off & Low Power Display Mode
     b"\x20\x01\x00"  # Set memory addressing to horizontal mode.
-    b"\x40\x01\x2E"  # SET_DISP_START_LINE ADD
+    b"\x40\x01\x2e"  # SET_DISP_START_LINE ADD
     b"\xc8\x00"  # Set COM Output Scan Direction 64 to 1
     b"\xda\x01\x12"  # Set com configuration
     b"\x91\x04\x3f\x3f\x3f\x3f"  # Current drive pulse width of BANK0, Color A, Band C.
     b"\xd9\x01\xd2"  # Set pre-charge period orig: 0xd9, 0x22 if self.external_vcc else 0xf1,
     b"\xdb\x01\x34"  # Set vcom configuration 0xdb, 0x30, $ 0.83* Vcc
-    b"\xA6\x00"  # Normal display
-    b"\xA4\x00"  # output follows RAM contents  SET_ENTIRE_ON
+    b"\xa6\x00"  # Normal display
+    b"\xa4\x00"  # output follows RAM contents  SET_ENTIRE_ON
     b"\x8d\x01\x14"  # Enable charge pump
-    b"\xAF\x00\x00"  # DISPLAY_ON
+    b"\xaf\x00\x00"  # DISPLAY_ON
 )
 
 
